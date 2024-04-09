@@ -2,29 +2,37 @@ package com.movie;
 
 import java.util.Scanner;
 
+import com.movie.controller.MovieController;
 import com.movie.controller.UserController;
+import com.movie.dto.UserDTO;
+import com.movie.service.UserService;
 import com.movie.view.UserView;
 
 public class MainApplication {
 	
 	static Scanner sc = new Scanner(System.in);
+	public static UserDTO user = null;
 
 	public static void main(String[] args) {
 		boolean isStop = false;
-		String nickname;
+		
 		
 		while(!isStop) {
 			int select = menuPrint();
 			switch(select) {
 			case 1->{
-				nickname = UserController.loginMenu(sc);
-				System.out.println(UserView.print(nickname));
+				user = UserController.loginMenu(sc);
+				boolean result = UserView.print(user.getNickname());
+				if (result) { // 로그인 성공한 경우 회원 메뉴로 전환
+					MovieController.movieMainMenu(sc);	// 회원전용 메뉴
+				}
 			}
 			case 2->{
-				
+				int result = UserController.SignUpMenu(sc);
+				UserView.print(result);
 			}
 			case 3->{
-				
+				//MovieController.movieMenu(sc);
 			}
 			case 4->{
 				isStop = true;
@@ -42,7 +50,7 @@ public class MainApplication {
 		System.out.println("===================================");
 		System.out.println("1.로그인 | 2.회원가입 | 3.영화조회 | 4.종료");
 		System.out.print("작업을 선택하세요>> ");
-		int job = sc.nextInt();
+		int job = Integer.parseInt(sc.nextLine());
 		System.out.println("-----------------------------------");
 		
 		return job;
