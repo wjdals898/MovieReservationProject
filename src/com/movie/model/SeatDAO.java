@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.movie.dto.SeatDTO;
 import com.movie.util.DBUtil;
 
 public class SeatDAO {
@@ -20,10 +21,32 @@ public class SeatDAO {
 		conn = DBUtil.dbConnection();
 		String sql = "select *"
 				+ " from seats"
-				+ " where theater_id = ? and is_soldout = 0";
+				+ " where theater_id = ?";
 		try {
 			pst = conn.prepareStatement(sql);
 			pst.setInt(1, theaterId);
+			rs = pst.executeQuery();
+			while(rs.next()) {
+				seatList.add(makeSeat(rs));
+			}
+		} catch (SQLException e) {
+		} finally {
+			DBUtil.dbDisconnect(conn, pst, rs);
+		}
+		
+		return seatList;
+	}
+	
+	public List<SeatDTO> showBySeatNum(String[] seatNumList, int theaterId) {
+		List<SeatDTO> seatList = new ArrayList<SeatDTO>();
+		conn = DBUtil.dbConnection();
+		String sql = "select * from seats where theater_id = ? and seat_num in (?" + ",?".repeat(seatNumList.length-1) + ") and is_soldout=0";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, theaterId);
+			for(int i=1;i<=seatNumList.length;i++) {
+				pst.setString(i+1, seatNumList[i-1]);
+			}
 			rs = pst.executeQuery();
 			while(rs.next()) {
 				seatList.add(makeSeat(rs));
@@ -44,5 +67,7 @@ public class SeatDAO {
 		
 		return seat;
 	}
+
+	
 
 }

@@ -1,10 +1,11 @@
 package com.movie.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.movie.dto.SeatDTO;
 import com.movie.dto.TheaterDTO;
 import com.movie.model.SeatDAO;
-import com.movie.model.SeatDTO;
 
 public class SeatService {
 
@@ -12,6 +13,10 @@ public class SeatService {
 	
 	public List<SeatDTO> showAll(int theaterId) {
 		return seatDao.showAll(theaterId);
+	}
+
+	public List<SeatDTO> showSeatsInfo(String[] seatNumList, int theaterId) {
+		return seatDao.showBySeatNum(seatNumList, theaterId);
 	}
 
 }

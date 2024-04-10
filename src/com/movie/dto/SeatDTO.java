@@ -1,4 +1,4 @@
-package com.movie.model;
+package com.movie.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -10,7 +10,7 @@ public class TheaterView {
 		System.out.println("-----------------------------------------");
 		System.out.println("["+title+"] 상영관 리스트");
 		System.out.println("-----------------------------------------");
-		System.out.println(" 번호\t상영날짜\t상영시간\t잔여좌석수");
+		System.out.println(" 번호\t상영날짜\t\t상영시간\t잔여좌석수");
 		System.out.println("-----------------------------------------");
 		int i = 1;
 		for(TheaterDTO theater:theaterList) {

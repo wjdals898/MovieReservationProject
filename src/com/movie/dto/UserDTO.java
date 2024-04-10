@@ -10,6 +10,7 @@ import lombok.ToString;
 @ToString
 @Getter@Setter
 public class UserDTO {
+	private int id;
 	private String username;
 	private String nickname;
 	private boolean isManager;

@@ -38,6 +38,7 @@ public class UserDAO {
 
 	private UserDTO makeUser(ResultSet rs) throws SQLException {
 		UserDTO user = new UserDTO();
+		user.setId(rs.getInt("id"));
 		user.setUsername(rs.getString("username"));
 		user.setNickname(rs.getString("nickname"));
 		user.setManager(rs.getInt("is_manager")==1?true:false);

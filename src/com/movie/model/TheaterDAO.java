@@ -20,7 +20,6 @@ public class TheaterDAO {
 	public List<TheaterDTO> showAll(MovieDTO movie) {
 		List<TheaterDTO> theaterList = new ArrayList<TheaterDTO>();
 		conn = DBUtil.dbConnection();
-		System.out.println("******"+movie);
 		
 		String sql = "select * from theaters where movie_id = ? and screening_date >= sysdate";
 		try {
