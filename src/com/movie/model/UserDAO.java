@@ -32,7 +32,6 @@ public class UserDAO {
 			DBUtil.dbDisconnect(conn, pst, rs);
 		}
 		
-		
 		return user;
 	}
 

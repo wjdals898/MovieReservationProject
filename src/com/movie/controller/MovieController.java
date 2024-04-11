@@ -19,11 +19,12 @@ public class MovieController {
 		boolean isLogout = false;
 
 		while (!isLogout) {
-			int select = mainMenu(sc);
+			int select = loginUserMainMenu(sc);
+			List<MovieDTO> movieList = null;
 
 			switch (select) {
 			case 1 -> { // 1. 전체영화조회
-				List<MovieDTO> movieList = movieService.showAll();
+				movieList = movieService.showAll();
 				while (true) {
 					MovieView.printAll(movieList, "전체영화 리스트");
 					int result = subMenu(sc, movieList);
@@ -34,7 +35,7 @@ public class MovieController {
 				}
 			}
 			case 2 -> {
-				List<MovieDTO> movieList = movieService.showByScreening();
+				movieList = movieService.showByScreening();
 				while (true) {
 					MovieView.printScreening(movieList);
 					int result = subMenu(sc, movieList);
@@ -47,7 +48,61 @@ public class MovieController {
 			case 3 -> {
 				System.out.print("영화제목 입력>> ");
 				String title = sc.nextLine();
-				List<MovieDTO> movieList = movieService.searchByTitle(title);
+				movieList = movieService.searchByTitle(title);
+				while (true) {
+					MovieView.printAll(movieList, title + " 검색결과 (" + movieList.size() + "건)");
+					int result = subMenu(sc, movieList);
+					if (result == 1 || result == 0)
+						break;
+					else
+						continue;
+				}
+			}
+			case 4 -> { // 예매내역 확인
+				int result = ReservationController.showReservationMenu(sc);
+
+			}
+			case 5 -> {
+				isLogout = true;
+			}
+			}
+		}
+	}
+
+	public static void movieMenu(Scanner sc) {
+		boolean isStop = false;
+
+		while (!isStop) {
+			int select = noLoginMainMenu(sc);
+			List<MovieDTO> movieList = null;
+
+			switch (select) {
+			case 1 -> {
+				movieList = movieService.showAll();
+				while (true) {
+					MovieView.printAll(movieList, "전체영화 리스트");
+					int result = subMenu(sc, movieList);
+					if (result == 1 || result == 0)
+						break;
+					else
+						continue;
+				}
+			}
+			case 2 -> {
+				movieList = movieService.showByScreening();
+				while (true) {
+					MovieView.printScreening(movieList);
+					int result = subMenu(sc, movieList);
+					if (result == 1 || result == 0)
+						break;
+					else
+						continue;
+				}
+			}
+			case 3 -> {
+				System.out.print("영화제목 입력>> ");
+				String title = sc.nextLine();
+				movieList = movieService.searchByTitle(title);
 				while (true) {
 					MovieView.printAll(movieList, title + " 검색결과 (" + movieList.size() + "건)");
 					int result = subMenu(sc, movieList);
@@ -58,20 +113,29 @@ public class MovieController {
 				}
 			}
 			case 4 -> {
-
-			}
-			case 5 -> {
-				isLogout = true;
+				isStop = true;
 			}
 			}
 		}
+
 	}
 
-	private static int mainMenu(Scanner sc) {
-		System.out.println("===================================");
-		System.out.println(user.getNickname() + "님");
-		System.out.println("===================================");
+	private static int loginUserMainMenu(Scanner sc) {
+		System.out.println("=========================================");
+		System.out.println("* " + user.getNickname() + "님 *");
+		System.out.println("=========================================");
 		System.out.println("1.전체영화조회 | 2.상영중인영화조회 | 3.영화검색 | 4.예매내역 | 5.로그아웃");
+		System.out.print("서비스를 선택하세요>> ");
+		int select = Integer.parseInt(sc.nextLine());
+
+		return select;
+	}
+
+	private static int noLoginMainMenu(Scanner sc) {
+		System.out.println("=========================================");
+		System.out.println("* 게스트님 *");
+		System.out.println("=========================================");
+		System.out.println("1.전체영화조회 | 2.상영중인영화조회 | 3.영화검색 | 4.뒤로가기");
 		System.out.print("서비스를 선택하세요>> ");
 		int select = Integer.parseInt(sc.nextLine());
 
@@ -92,21 +156,61 @@ public class MovieController {
 				System.out.print("영화번호 입력>> ");
 				movieNum = Integer.parseInt(sc.nextLine());
 				if (movieNum <= 0 || movieNum > movieList.size()) {
-					System.out.println("<잘못된 접근입니다!>");
+					System.out.println("<잘못된 접근입니다!>\n");
 					continue;
 				} else {
 					break;
 				}
 			}
-			result = TheaterController.selectTheaterMenu(sc, movieList.get(movieNum - 1))==0?-1:1;	// 1이면 홈으로 0이면 이전으로
+			result = TheaterController.selectTheaterMenu(sc, movieList.get(movieNum - 1)) == 0 ? -1 : 1; // 1이면 홈으로 0이면
+																											// 이전으로
 		} else if (select == 2) {
 			result = 0; // 뒤로가기(로그인회원 메인메뉴로)
 		} else {
-			System.out.println("<잘못된 접근입니다!>");
+			System.out.println("<잘못된 접근입니다!>\n");
 			result = -1; // 이 함수 다시 호출
 		}
 
 		return result; // 영화 선택 완료
 	}
 
+	public static void addMovieMenu(Scanner sc) { // 관리자 전용 메뉴
+		System.out.println("-----------------------------------------");
+		System.out.println("추가할 영화 정보를 입력하세요");
+		System.out.print(" 제  목 | ");
+		String title = sc.nextLine();
+		System.out.print(" 감  독 | ");
+		String director = sc.nextLine();
+		System.out.print(" 상영시간 | ");
+		String runningTime = sc.nextLine();
+		System.out.print(" 소  개 | ");
+		String content = sc.nextLine();
+		System.out.println("-----------------------------------------");
+		while (true) {
+			System.out.println("1.추가하기 | 2.뒤로가기");
+			System.out.print("작업을 선택하세요>> ");
+			int select = Integer.parseInt(sc.nextLine());
+			if (select == 1) {
+				MovieDTO newMovie = new MovieDTO();
+				newMovie.setMovieTitle(title);
+				newMovie.setDirector(director);
+				newMovie.setRunningTime(runningTime);
+				newMovie.setContent(content);
+				
+				int result = movieService.addMovie(newMovie); // 1이면 추가성공 0이면 실패
+				if(result == 1) {
+					System.out.println("[추가완료]\n");
+				} else {
+					System.out.println("[추가실패]\n");
+				}
+				break;
+			} else if (select == 2) {
+				return;
+			} else {
+				System.out.println("<잘못된 접근입니다!>\n");
+				continue;
+			}
+		}
+
+	}
 }

@@ -21,4 +21,8 @@ public class MovieService {
 		return movieDao.searchByTitle(title);
 	}
 
+	public int addMovie(MovieDTO newMovie) {
+		return movieDao.addMovie(newMovie);
+	}
+
 }

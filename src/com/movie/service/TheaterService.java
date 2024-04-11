@@ -1,5 +1,6 @@
 package com.movie.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.movie.dto.MovieDTO;
@@ -12,6 +13,14 @@ public class TheaterService {
 
 	public List<TheaterDTO> showAll(MovieDTO movie) {
 		return theaterDao.showAll(movie);
+	}
+
+	public List<TheaterDTO> showByDate(MovieDTO movie, Date selectDate) {
+		return theaterDao.showByDate(movie, selectDate);
+	}
+
+	public int addTheater(TheaterDTO newTheater) {
+		return theaterDao.addTheater(newTheater);
 	}
 	
 	

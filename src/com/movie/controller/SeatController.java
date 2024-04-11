@@ -17,7 +17,7 @@ public class SeatController {
 		int result = -1;
 		List<SeatDTO> seatList = seatService.showAll(theaterDTO.getId());
 		if (seatList.size() <= 0) {
-			System.out.println("선택한 상영관은 <매진>입니다. 다른 상영관을 선택하세요.");
+			System.out.println("<선택한 상영관은 *매진*입니다. 다른 상영관을 선택하세요.>\n");
 			return 0; // 상영관 리스트 조회
 		}
 		while (true) {
@@ -57,7 +57,7 @@ public class SeatController {
 		} else if(select == 2) {
 			result = 0;
 		} else {
-			System.out.println("<잘못된 접근입니다!>");
+			System.out.println("<잘못된 접근입니다!>\n");
 			result = -1;
 		}
 		

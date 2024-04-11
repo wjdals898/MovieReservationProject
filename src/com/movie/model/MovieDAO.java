@@ -75,6 +75,26 @@ public class MovieDAO {
 		
 		return movieList;
 	}
+	
+	public int addMovie(MovieDTO newMovie) {
+		int result = 0;
+		conn = DBUtil.dbConnection();
+		String sql = "insert into movies values(movies_seq.nextval, ?, ?, ?,?,0)";
+		try {
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, newMovie.getMovieTitle());
+			pst.setString(2, newMovie.getDirector());
+			pst.setString(3, newMovie.getContent());
+			pst.setString(4, newMovie.getRunningTime());
+			result = pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.dbDisconnect(conn, st, rs);
+		}
+		
+		return result;
+	}
 
 	private String makeSql(String[] strList) {
 		String sql = "select * from movies where movie_title like '%'||?||'%'";
@@ -96,6 +116,5 @@ public class MovieDAO {
 
 		return movie;
 	}
-
 
 }
