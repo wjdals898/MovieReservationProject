@@ -28,7 +28,7 @@ public class TheaterController {
 					if(theaterList.size()<=0) {
 						TheaterView.print(movie.getMovieTitle());
 						System.out.println("              상영관이 없습니다.\n");
-						result = 0;
+						result = -1;
 						break;
 					}
 					TheaterView.showAll(theaterList, movie.getMovieTitle());
@@ -48,8 +48,8 @@ public class TheaterController {
 				while (true) {
 					if(theaterList.size()<=0) {
 						TheaterView.print(movie.getMovieTitle());
-						System.out.println("              상영관이 없습니다.\n");
-						result = 0;
+						System.out.println("       해당 날짜에 상영관이 없습니다.\n");
+						result = -1;
 						break;
 					}
 					TheaterView.showAll(theaterList, movie.getMovieTitle());
@@ -65,6 +65,9 @@ public class TheaterController {
 			}
 			case 3 -> {
 				result = 0;
+			}
+			default->{
+				System.out.println("<잘못된 접근입니다!>\n");
 			}
 			}
 			if (result == 0 || result == 1)

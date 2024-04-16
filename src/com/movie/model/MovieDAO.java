@@ -39,7 +39,7 @@ public class MovieDAO {
 	public List<MovieDTO> showByScreening() {
 		List<MovieDTO> movieList = new ArrayList<MovieDTO>();
 		conn = DBUtil.dbConnection();
-		String sql = "select * from movies where theaters_count>0 order by theaters_count";
+		String sql = "select * from movies where theaters_count>0 order by theaters_count desc, id asc";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);

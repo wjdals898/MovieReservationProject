@@ -15,6 +15,7 @@ import com.movie.dto.ReservationDTO;
 import com.movie.dto.SeatDTO;
 import com.movie.dto.UserDTO;
 import com.movie.util.DBUtil;
+import com.movie.util.DateUtil;
 
 public class ReservationDAO {
 
@@ -61,11 +62,12 @@ public class ReservationDAO {
 	public List<ReservationDTO> showAll() {
 		List<ReservationDTO> reservationList = new ArrayList<ReservationDTO>();
 		conn = DBUtil.dbConnection();
-		String sql = "select reservations.id, reservations.reservation_date, "
+		String sql = "select reservations.id, "
+				+ "to_char(reservations.reservation_date, 'yyyy-mm-dd hh24:mi:ss') reservation_date, "
 				+ "movies.movie_title, movies.running_time, "
 				+ "theaters.screening_date, theaters.screening_time, seats.seat_num "
-				+ "from (reservations join theaters on(reservations.theater_id = theaters.id))" + "    , movies"
-				+ "    , seats join seats_reservations on(seats.id = seats_reservations.seat_id) "
+				+ "from (reservations join theaters on(reservations.theater_id = theaters.id)), "
+				+ "movies, seats join seats_reservations on(seats.id = seats_reservations.seat_id) "
 				+ "where reservations.user_id = ?" 
 				+ "    and theaters.movie_id = movies.id "
 				+ "    and reservations.id = seats_reservations.reservation_id "
@@ -104,6 +106,9 @@ public class ReservationDAO {
 			cstmt = conn.prepareCall(deleteSql);
 			cstmt.setInt(1, cancelReservation.getId());
 			result = cstmt.executeUpdate();
+			if(result == 1) {
+				conn.commit();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -117,7 +122,7 @@ public class ReservationDAO {
 		reservation.setId(rs.getInt("id"));
 		reservation.setMovieTitle(rs.getString("movie_title"));
 		reservation.setRunningTime(rs.getString("running_time"));
-		reservation.setReservationDate(rs.getDate("reservation_date"));
+		reservation.setReservationDate(rs.getString("reservation_date"));
 		reservation.setScreeningDate(rs.getDate("screening_date"));
 		reservation.setScreeningTime(rs.getString("screening_time"));
 		reservation.setSeats("");

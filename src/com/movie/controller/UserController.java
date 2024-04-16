@@ -27,7 +27,8 @@ public class UserController {
 
 		return userService.login(username, password);
 	}
-
+		
+	
 	public static int SignUpMenu(Scanner sc) {
 		System.out.println("[회원가입]");
 		System.out.print("아이디>> ");

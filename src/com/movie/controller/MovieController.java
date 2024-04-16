@@ -13,9 +13,9 @@ import com.movie.view.MovieView;
 public class MovieController {
 
 	static MovieService movieService = new MovieService();
-	static UserDTO user = MainApplication.user;
 
 	public static void movieMainMenu(Scanner sc) { // 로그인한 회원 메뉴
+		
 		boolean isLogout = false;
 
 		while (!isLogout) {
@@ -50,7 +50,7 @@ public class MovieController {
 				String title = sc.nextLine();
 				movieList = movieService.searchByTitle(title);
 				while (true) {
-					MovieView.printAll(movieList, title + " 검색결과 (" + movieList.size() + "건)");
+					MovieView.printAll(movieList, "\""+title + "\" 검색결과 (" + movieList.size() + "건)");
 					int result = subMenu(sc, movieList);
 					if (result == 1 || result == 0)
 						break;
@@ -59,11 +59,15 @@ public class MovieController {
 				}
 			}
 			case 4 -> { // 예매내역 확인
+				System.out.println();
 				int result = ReservationController.showReservationMenu(sc);
 
 			}
 			case 5 -> {
 				isLogout = true;
+			}
+			default ->{
+				System.out.println("<잘못된 접근입니다!>\n");
 			}
 			}
 		}
@@ -115,12 +119,14 @@ public class MovieController {
 			case 4 -> {
 				isStop = true;
 			}
+			default ->{System.out.println("<잘못된 접근입니다!>\n");}
 			}
 		}
 
 	}
 
 	private static int loginUserMainMenu(Scanner sc) {
+		UserDTO user = MainApplication.user;
 		System.out.println("=========================================");
 		System.out.println("* " + user.getNickname() + "님 *");
 		System.out.println("=========================================");
@@ -159,6 +165,7 @@ public class MovieController {
 					System.out.println("<잘못된 접근입니다!>\n");
 					continue;
 				} else {
+					System.out.println();
 					break;
 				}
 			}
@@ -188,7 +195,7 @@ public class MovieController {
 		System.out.println("-----------------------------------------");
 		while (true) {
 			System.out.println("1.추가하기 | 2.뒤로가기");
-			System.out.print("작업을 선택하세요>> ");
+			System.out.print("서비스를 선택하세요>> ");
 			int select = Integer.parseInt(sc.nextLine());
 			if (select == 1) {
 				MovieDTO newMovie = new MovieDTO();

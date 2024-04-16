@@ -31,7 +31,10 @@ public class MainApplication {
 						MovieController.movieMainMenu(sc); // 회원전용 메뉴
 					}
 				}
-				user = guest;
+				
+				System.out.println("\n-----------------------------------------");
+				System.out.println("[로그아웃 완료]");
+				System.out.println("-----------------------------------------\n");
 			}
 			case 2 -> { // 회원가입
 				int result = UserController.SignUpMenu(sc);
@@ -43,9 +46,14 @@ public class MainApplication {
 			case 4 -> {
 				isStop = true;
 			}
+			default->{
+				
+				System.out.println("<잘못된 접근입니다!>\n");
 			}
+			}
+			user = guest;
 		}
-		System.out.println("=============<서비스를 종료합니다>=============");
+		System.out.println("\n=============<서비스를 종료합니다>=============");
 		sc.close();
 
 	}

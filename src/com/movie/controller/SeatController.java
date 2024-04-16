@@ -42,14 +42,18 @@ public class SeatController {
 			while(true) {
 				System.out.print("예매할 좌석번호를 모두 선택하세요>> ");
 				String seatNum = sc.nextLine();
+				if(seatNum.length()<=0) {	// 좌석번호가 입력되지 않은 경우
+					System.out.println("<선택된 좌석이 없습니다!>");
+					continue;
+				}
 				String[] seatNumList = seatNum.split(" ");
 				seatInfo = seatService.showSeatsInfo(seatNumList, theater.getId());	// 좌석정보 가져오기
-				//seatInfo.stream().forEach((seat)->System.out.println(seat));
-				System.out.println("선택한 좌석 수 = "+seatNumList.length);
+				System.out.println("선택한 좌석 수 : "+seatNumList.length+"개");
 				if(seatInfo.size() != seatNumList.length) {
-					System.out.println("예매할 수 없는 좌석번호가 포함되어있습니다. 다시 선택하세요.>>");
+					System.out.println("<예매할 수 없는 좌석번호가 포함되어있습니다. 다시 선택하세요.>");
 					continue;
 				} else {
+					System.out.println();
 					break;
 				}
 			}

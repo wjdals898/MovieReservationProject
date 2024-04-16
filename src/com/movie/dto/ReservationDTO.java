@@ -16,6 +16,6 @@ public class ReservationDTO {
 	private Date screeningDate;
 	private String screeningTime;
 	private String seats;
-	private Date reservationDate;
+	private String reservationDate;
 	
 }

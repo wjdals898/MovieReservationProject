@@ -57,6 +57,7 @@ public class ReservationController {
 			System.out.println("1.예매취소 | 2.뒤로가기(메인으로)");
 			System.out.print("서비스를 선택하세요>> ");
 			int select = Integer.parseInt(sc.nextLine());
+			System.out.println();
 			if (select == 1) {
 				ReservationView.showCancelableList(reservationList);
 				while(true) {
